@@ -1,31 +1,27 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-conekta"
-        version="0.1.0"
-        xmlns="http://apache.org/cordova/ns/plugins/1.0">
-    <name>CordovaConekta</name>
-    <js-module name="CordovaConekta"
-               src="www/CordovaConekta.js">
-        <clobbers target="cordova.plugins.CordovaConekta" />
+<plugin id="cordova-plugin-conekta" version="0.1.0"
+    xmlns="http://apache.org/cordova/ns/plugins/1.0">
+    <name>cordova-plugin-conekta</name>
+    <js-module name="conekta" src="www/CordovaConekta.js">
+        <clobbers target="cordova.plugins.conekta" />
     </js-module>
     <platform name="android">
-        <config-file parent="/*"
-                     target="res/xml/config.xml">
+        <config-file parent="/*" target="res/xml/config.xml">
             <feature name="CordovaConekta">
-                <param name="android-package"
-                       value="cordova-plugin-conekta.CordovaConekta" />
+                <param name="android-package" value="com.nwrman.cordova.conekta.CordovaConekta" />
             </feature>
         </config-file>
-        <config-file parent="/*"
-                     target="AndroidManifest.xml" />
+        <config-file parent="/*" target="AndroidManifest.xml" />
+
+        <framework custom="true" src="src/android/conekta.gradle" type="gradleReference" />
+
         <source-file src="src/android/CordovaConekta.java"
-                     target-dir="src/cordova-plugin-conekta/CordovaConekta" />
+            target-dir="src/com/nwrman/cordova/conekta" />
     </platform>
     <platform name="ios">
-        <config-file parent="/*"
-                     target="config.xml">
+        <config-file parent="/*" target="config.xml">
             <feature name="CordovaConekta">
-                <param name="ios-package"
-                       value="CordovaConekta" />
+                <param name="ios-package" value="CordovaConekta" />
             </feature>
         </config-file>
         <source-file src="src/ios/CordovaConekta.m" />
