@@ -1,0 +1,31 @@
+{
+  "name": "cordova-plugin-conekta",
+  "version": "0.1.0",
+  "description": "Cordova plugin that lets you use Conekta's Native SDKs for Android and iOS",
+  "cordova": {
+    "id": "cordova-plugin-conekta",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nwrman/cordova-plugin-conekta.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "conekta",
+    "ionic",
+    "phonegap",
+    "cordova-plugin"
+  ],
+  "author": "Jonathan H. Fernández",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nwrman/cordova-plugin-conekta/issues"
+  },
+  "homepage": "https://github.com/nwrman/cordova-plugin-conekta#readme"
+}

@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-conekta"
+        version="0.1.0"
+        xmlns="http://apache.org/cordova/ns/plugins/1.0">
+    <name>CordovaConekta</name>
+    <js-module name="CordovaConekta"
+               src="www/CordovaConekta.js">
+        <clobbers target="cordova.plugins.CordovaConekta" />
+    </js-module>
+    <platform name="android">
+        <config-file parent="/*"
+                     target="res/xml/config.xml">
+            <feature name="CordovaConekta">
+                <param name="android-package"
+                       value="cordova-plugin-conekta.CordovaConekta" />
+            </feature>
+        </config-file>
+        <config-file parent="/*"
+                     target="AndroidManifest.xml" />
+        <source-file src="src/android/CordovaConekta.java"
+                     target-dir="src/cordova-plugin-conekta/CordovaConekta" />
+    </platform>
+    <platform name="ios">
+        <config-file parent="/*"
+                     target="config.xml">
+            <feature name="CordovaConekta">
+                <param name="ios-package"
+                       value="CordovaConekta" />
+            </feature>
+        </config-file>
+        <source-file src="src/ios/CordovaConekta.m" />
+    </platform>
+</plugin>
