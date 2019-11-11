@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-conekta" version="0.1.0"
-    xmlns="http://apache.org/cordova/ns/plugins/1.0">
+<plugin xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-conekta" version="0.2.0" xmlns="http://apache.org/cordova/ns/plugins/1.0">
     <name>cordova-plugin-conekta</name>
     <js-module name="conekta" src="www/CordovaConekta.js">
         <clobbers target="cordova.plugins.conekta" />
@@ -11,12 +10,12 @@
                 <param name="android-package" value="com.nwrman.cordova.conekta.CordovaConekta" />
             </feature>
         </config-file>
-        <config-file parent="/*" target="AndroidManifest.xml" />
-
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        </config-file>
         <framework custom="true" src="src/android/conekta.gradle" type="gradleReference" />
 
-        <source-file src="src/android/CordovaConekta.java"
-            target-dir="src/com/nwrman/cordova/conekta" />
+        <source-file src="src/android/CordovaConekta.java" target-dir="src/com/nwrman/cordova/conekta" />
     </platform>
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
