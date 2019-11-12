@@ -25,4 +25,60 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)setPublicKey:(CDVInvokedUrlCommand*)command
+{
+
+    CDVPluginResult* pluginResult = nil;
+
+
+    NSString* publicKey = [[command arguments] objectAtIndex:0];
+
+    NSLog(@"%@", publicKey);
+
+    // [[STPPaymentConfiguration sharedConfiguration] setPublicKey:publicKey];
+
+
+    // if (self.client == nil) {
+    //     // init client if doesn't exist
+    //     client = [[STPAPIClient alloc] init];
+    // } else {
+    //     [self.client setPublicKey:publicKey];
+    // }
+
+
+    pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+}
+
+- (void)createCardToken:(CDVInvokedUrlCommand*)command
+{
+
+    CDVPluginResult* pluginResult = nil;
+
+
+    NSString* tokenId = @"tokenASDXXXXX";
+
+    NSLog(@"%@", tokenId);
+
+    // NSLog(@"%@", publicKey);
+
+    // [[STPPaymentConfiguration sharedConfiguration] setPublicKey:publicKey];
+
+
+    // if (self.client == nil) {
+    //     // init client if doesn't exist
+    //     client = [[STPAPIClient alloc] init];
+    // } else {
+    //     [self.client setPublicKey:publicKey];
+    // }
+
+
+    pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsString:tokenId];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+}
+
 @end
