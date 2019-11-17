@@ -71,9 +71,9 @@ public class CordovaConekta extends CordovaPlugin {
                     callbackContext.success(data.getString("id"));
                 } catch (Exception err) {
                     try {
-                        callbackContext.error("Conekta - " + data.getString("message_to_purchaser"));
-                    } catch (JSONException e) {
-                        callbackContext.error("¡Error no especificado! 😱");
+                        callbackContext.success(data.getString("id"));
+                    } catch (Exception err) {
+                        callbackContext.error(data);
                     }
                 }
             }

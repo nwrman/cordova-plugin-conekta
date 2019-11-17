@@ -23,6 +23,20 @@
                 <param name="ios-package" value="CordovaConekta" />
             </feature>
         </config-file>
+
+        <!-- Plugin implementation -->
+        <header-file src="src/ios/CordovaConekta.h" />
         <source-file src="src/ios/CordovaConekta.m" />
+
+         <!-- Conekta library -->
+        <header-file src="src/ios/Conekta/Card.h" />
+        <source-file src="src/ios/Conekta/Card.m" />
+        <header-file src="src/ios/Conekta/Conekta.h" />
+        <source-file src="src/ios/Conekta/Conekta.m" />
+        <header-file src="src/ios/Conekta/Connection.h" />
+        <source-file src="src/ios/Conekta/Connection.m" />
+        <header-file src="src/ios/Conekta/Token.h" />
+        <source-file src="src/ios/Conekta/Token.m" />
+
     </platform>
 </plugin>
