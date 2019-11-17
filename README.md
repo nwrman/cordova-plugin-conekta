@@ -33,8 +33,8 @@ let onSuccess = (tokenId) => {
     console.log('Got card token!', tokenId);
 };
 
-let onError = (errorMessage) => {
-    console.log('Error getting card token', errorMessage);
+let onError = (error) => {
+    console.log('Error getting card token', error.message_to_purchaser);
 };
 
 cordova.plugins.conekta.createCardToken(card, onSuccess, onError);

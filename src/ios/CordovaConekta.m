@@ -1,84 +1,91 @@
-/********* CordovaConekta.m Cordova Plugin Implementation *******/
-
-#import <Cordova/CDV.h>
-
-@interface CordovaConekta : CDVPlugin {
-  // Member variables go here.
-}
-
-- (void)coolMethod:(CDVInvokedUrlCommand*)command;
-@end
+#import "CordovaConekta.h"
+#import "Conekta.h"
 
 @implementation CordovaConekta
-
-- (void)coolMethod:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* pluginResult = nil;
-    NSString* echo = [command.arguments objectAtIndex:0];
-
-    if (echo != nil && [echo length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
+@synthesize client;
 
 - (void)setPublicKey:(CDVInvokedUrlCommand*)command
 {
-
+    
     CDVPluginResult* pluginResult = nil;
-
-
+    
     NSString* publicKey = [[command arguments] objectAtIndex:0];
-
+    
     NSLog(@"%@", publicKey);
-
-    // [[STPPaymentConfiguration sharedConfiguration] setPublicKey:publicKey];
-
-
-    // if (self.client == nil) {
-    //     // init client if doesn't exist
-    //     client = [[STPAPIClient alloc] init];
-    // } else {
-    //     [self.client setPublicKey:publicKey];
-    // }
-
-
+    
+    if (self.client == nil) {
+        self.client = [[Conekta alloc] init];
+    } else {
+        [self.client setPublicKey:publicKey];
+    }
+    
+    
     pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK];
-
+    
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    
+}
 
+- (void)throwNotInitializedError:(CDVInvokedUrlCommand *) command
+{
+    CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"You must call setPublicKey method before executing this command."];
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+}
+
+- (void (^)(NSDictionary *data))handleTokenCallback: (CDVInvokedUrlCommand *) command
+{
+    return ^(NSDictionary *data) {
+        
+        CDVPluginResult* result;
+        NSString *tokenId = data[@"id"];
+        
+        if (tokenId == nil){
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:data];
+            
+        } else {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:tokenId];
+        }
+        
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    };
+}
+
+- (void (^)(NSError *error))handleErrorCallback: (CDVInvokedUrlCommand *) command
+{
+    return ^(NSError *error) {
+        CDVPluginResult* result;
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: error.localizedDescription];
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    };
 }
 
 - (void)createCardToken:(CDVInvokedUrlCommand*)command
 {
-
-    CDVPluginResult* pluginResult = nil;
-
-
-    NSString* tokenId = @"tokenASDXXXXX";
-
-    NSLog(@"%@", tokenId);
-
-    // NSLog(@"%@", publicKey);
-
-    // [[STPPaymentConfiguration sharedConfiguration] setPublicKey:publicKey];
-
-
-    // if (self.client == nil) {
-    //     // init client if doesn't exist
-    //     client = [[STPAPIClient alloc] init];
-    // } else {
-    //     [self.client setPublicKey:publicKey];
-    // }
-
-
-    pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK messageAsString:tokenId];
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-
+    
+    if (self.client == nil) {
+        [self throwNotInitializedError:command];
+        return;
+    }
+    
+    
+    [self.commandDelegate runInBackground:^{
+        
+        NSDictionary* const cardInfo = [[command arguments] objectAtIndex:0];
+        
+        Card *card = [self.client.Card
+                  initWithNumber: cardInfo[@"number"]
+                  name: cardInfo[@"name"]
+                  cvc: cardInfo[@"cvc"]
+                  expMonth: cardInfo[@"exp_month"]
+                  expYear: cardInfo[@"exp_year"]
+              ];
+        
+        Token *token = [self.client.Token initWithCard:card];
+        
+        [token createWithSuccess:[self handleTokenCallback:command] andError:[self handleErrorCallback:command]];
+        
+    }];
+    
 }
 
 @end
