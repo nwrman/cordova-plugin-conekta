@@ -2,34 +2,21 @@
 #import "Conekta.h"
 
 @implementation CordovaConekta
-@synthesize client;
+@synthesize publicKeyString;
 
 - (void)setPublicKey:(CDVInvokedUrlCommand*)command
 {
     
     CDVPluginResult* pluginResult = nil;
     
-    NSString* publicKey = [[command arguments] objectAtIndex:0];
+    publicKeyString = [[command arguments] objectAtIndex:0];
     
-    NSLog(@"%@", publicKey);
-    
-    if (self.client == nil) {
-        self.client = [[Conekta alloc] init];
-    } else {
-        [self.client setPublicKey:publicKey];
-    }
-    
+    NSLog(@"%@", publicKeyString);
     
     pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_OK];
     
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     
-}
-
-- (void)throwNotInitializedError:(CDVInvokedUrlCommand *) command
-{
-    CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"You must call setPublicKey method before executing this command."];
-    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
 - (void (^)(NSDictionary *data))handleTokenCallback: (CDVInvokedUrlCommand *) command
@@ -61,18 +48,15 @@
 
 - (void)createCardToken:(CDVInvokedUrlCommand*)command
 {
-    
-    if (self.client == nil) {
-        [self throwNotInitializedError:command];
-        return;
-    }
-    
-    
     [self.commandDelegate runInBackground:^{
+        
+        Conekta *conekta = [[Conekta alloc] init];
+        [conekta setPublicKey:self->publicKeyString];
+        NSLog(@"%@", self->publicKeyString);
         
         NSDictionary* const cardInfo = [[command arguments] objectAtIndex:0];
         
-        Card *card = [self.client.Card
+        Card *card = [conekta.Card
                   initWithNumber: cardInfo[@"number"]
                   name: cardInfo[@"name"]
                   cvc: cardInfo[@"cvc"]
@@ -80,7 +64,8 @@
                   expYear: cardInfo[@"exp_year"]
               ];
         
-        Token *token = [self.client.Token initWithCard:card];
+        Token *token = [conekta.Token initWithCard:card];
+        
         
         [token createWithSuccess:[self handleTokenCallback:command] andError:[self handleErrorCallback:command]];
         

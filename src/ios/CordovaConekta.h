@@ -2,7 +2,7 @@
 #import "Conekta.h"
 
 @interface CordovaConekta : CDVPlugin
-@property (nonatomic, retain) Conekta *client;
+@property (nonatomic, copy) NSString *publicKeyString;
 
 - (void) setPublicKey:(CDVInvokedUrlCommand *) command;
 - (void) createCardToken:(CDVInvokedUrlCommand *) command;
