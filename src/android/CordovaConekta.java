@@ -70,11 +70,7 @@ public class CordovaConekta extends CordovaPlugin {
                 try {
                     callbackContext.success(data.getString("id"));
                 } catch (Exception err) {
-                    try {
-                        callbackContext.success(data.getString("id"));
-                    } catch (Exception err) {
-                        callbackContext.error(data);
-                    }
+                    callbackContext.error("Error: Token no pudo ser creado");
                 }
             }
         });
